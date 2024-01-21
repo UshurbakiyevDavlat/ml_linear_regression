@@ -5,14 +5,14 @@ import random
 def generate_salary_by_expirience(years_of_experience):
     base_salary = 200 * years_of_experience + 2000
 
-    return base_salary + random.randint(1, 199)
+    return base_salary + random.randint(1, 400)
 
 
 def entry_generator(num_rows=100):
     i = 0
 
     while i < num_rows:
-        years_of_experience = random.randint(0, 199)
+        years_of_experience = random.randint(0, 10)
 
         yield years_of_experience, generate_salary_by_expirience(years_of_experience)
         i += 1
