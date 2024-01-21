@@ -23,8 +23,9 @@ if __name__ == '__main__':
 
     # random_state if unset is None, and it will randomize trained data every time
     # if it's any integer then it is identification and nothing more.
-    # 80/20 , 80% - training data, 20% - test data
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+    # 70/30 , 70% - training data, 30% - test data
+    # if random_state can be any integer then why can not I set 42 =)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
 
     model = LinearRegression()
     model.fit(x_train, y_train)  # training model on years of exp and salaries relationship, uses 80% data
