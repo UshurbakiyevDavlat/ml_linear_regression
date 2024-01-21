@@ -1,6 +1,12 @@
 # Linear regression on python.
 
-So, Mathematically, linear regression can be described as a formula:
+Linear regression is supervised kind of learning.
+
+Where:
+- x is independent variable (example years_of_expirience)
+- y is dependent variable (example salaries)
+
+Mathematically, linear regression can be described as a formula:
 
 ~~~
 Y = a + b * X
