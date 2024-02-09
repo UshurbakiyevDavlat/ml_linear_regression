@@ -13,13 +13,13 @@ def entry_generator(num_rows=100):
 
     while i < num_rows:
         years_of_experience = random.randint(0, 10)
-
-        yield years_of_experience, generate_salary_by_expirience(years_of_experience)
+        city = random.randint(0, 10)
+        yield years_of_experience, city, generate_salary_by_expirience(years_of_experience)
         i += 1
 
 
 def generate_csv_data(num_rows=100):
-    header = 'Years of Experience', 'Salary'
+    header = 'Years of Experience', 'City', 'Salary'
     data = list(entry_generator(num_rows))
 
     return [header] + data

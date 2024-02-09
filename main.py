@@ -14,34 +14,38 @@ def generate_and_write_csv(file):
 
 
 if __name__ == '__main__':
+    # generate_and_write_csv('data/salaries_100.csv')
     file_name = 'data/salaries_100.csv'
     df = pd.read_csv(file_name)
 
     # let's find out dependent and independent variable values
-    x = df.iloc[:, :-1].values  # get all rows with all columns except the last one, so here the years of expirience
+    x = df.iloc[:, :-1].values  # get all rows with all columns except the last one, so here the years of experience
     y = df.iloc[:, -1].values  # get all rows with only the last column # and here is salaries
 
     # random_state if unset is None, and it will randomize trained data every time
     # if it's any integer then it is identification and nothing more.
     # 70/30 , 70% - training data, 30% - test data
     # if random_state can be any integer then why can not I set 42 =)
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0) # set 20 percent for test data and 0 random state
 
     model = LinearRegression()
-    model.fit(x_train, y_train)  # training model on years of exp and salaries relationship, uses 80% data
-    y_pred = model.predict(x_test)  # predicting salaries for 20% testing years of exp
 
-    # as long as out model trained now we can use even additional years of experience
-    salaries = model.predict([[11], [13], [14.8], [
-        50]])  # argument is matrix, because fit() and predict() accept only this kind of data type.
+    model.fit(x_train, y_train)  # training model on years of exp and salaries relationship, uses 70% data
+    y_pred = model.predict(x_test)  # predicting salaries for 30% testing years of exp
 
     # diff in accuracy between predicted and testing salaries
-    error = y_pred - y_test
+    # error = y_pred - y_test
 
-    r2 = r2_score(y_test, y_pred)
-    print(f"R2 score: {r2} ({r2:.2%})")
+    r2 = r2_score(y_test, y_pred) # score of prediction accuracy with the test data
+    print(f"R2 Score: {r2} ({r2:.2%})")
 
-    plt.scatter(x_test, y_test)
-    plt.plot(x_test, y_pred, color="yellow")
+    # as long as out model trained now we can use even additional years of experience
+    # argument is matrix, because fit() and predict() accept only this kind of data type.
+    salaries = model.predict([[11, 1], [11, 2], [12, 1], [12, 2]])
+    print(salaries)
 
-    plt.show()
+    # whether it is 3-dimensional dataset here, scatter bellow is not actual anymore
+    # plt.scatter(x_test, y_test)
+    # plt.plot(x_test, y_pred, color="yellow")
+    #
+    # plt.show()
