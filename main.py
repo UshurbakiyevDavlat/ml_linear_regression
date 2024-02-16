@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression
@@ -13,10 +14,53 @@ def generate_and_write_csv(file):
     write_csv(file, data)
 
 
-if __name__ == '__main__':
-    # generate_and_write_csv('data/salaries_100.csv')
-    file_name = 'data/salaries_100.csv'
+def prepare_data(file_name):
     df = pd.read_csv(file_name)
+    df = df.dropna()
+
+    filter_params = ['lang', 'city']
+
+    for param in filter_params:
+        filter_data(df, param)
+
+
+def data_info(df):
+    print(df.head())
+    print(df.shape)
+    df.info()
+    print(df.describe())
+
+
+def filter_data(df, term):
+    match term:
+        case 'lang':
+            lang_filter(df)
+        case 'city':
+            city_filter(df)
+        case default:
+            print('There is no filter like that.')
+
+
+def lang_filter(df):
+    allowed_languages = ['php', 'js', '.net', 'java']
+    df = df[df['language'].isin(allowed_languages)]
+    print(df.shape)
+
+
+def city_filter(df):
+    vilnius_names = ['Vilniuj', 'Vilniua', 'VILNIUJE', 'VILNIUS', 'vilnius', 'Vilniuje']
+    condition = df['city'].isin(vilnius_names)
+    df.loc[condition, 'city'] = 'Vilnius'
+
+    kaunas_names = ['KAUNAS', 'kaunas', 'Kaune']
+    condition = df['city'].isin(kaunas_names)
+    df.loc[condition, 'city'] = 'Kaunas'
+
+    print(df.city.value_counts())
+
+
+def linear_regression(df):
+    # generate_and_write_csv('data/salaries_100.csv')
 
     # let's find out dependent and independent variable values
     x = df.iloc[:, :-1].values  # get all rows with all columns except the last one, so here the years of experience
@@ -26,7 +70,9 @@ if __name__ == '__main__':
     # if it's any integer then it is identification and nothing more.
     # 70/30 , 70% - training data, 30% - test data
     # if random_state can be any integer then why can not I set 42 =)
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0) # set 20 percent for test data and 0 random state
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2,
+                                                        random_state=0)  # set 20 percent for test data and 0 random
+    # state
 
     model = LinearRegression()
 
@@ -36,7 +82,7 @@ if __name__ == '__main__':
     # diff in accuracy between predicted and testing salaries
     # error = y_pred - y_test
 
-    r2 = r2_score(y_test, y_pred) # score of prediction accuracy with the test data
+    r2 = r2_score(y_test, y_pred)  # score of prediction accuracy with the test data
     print(f"R2 Score: {r2} ({r2:.2%})")
 
     # as long as out model trained now we can use even additional years of experience
@@ -49,3 +95,8 @@ if __name__ == '__main__':
     # plt.plot(x_test, y_pred, color="yellow")
     #
     # plt.show()
+
+
+if __name__ == '__main__':
+    file_name = 'data/salaries-2023.csv'  # 'data/salaries_100.csv'
+    prepare_data(file_name)
