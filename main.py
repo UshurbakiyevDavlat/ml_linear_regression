@@ -46,6 +46,26 @@ def lang_filter(df):
     df = df[df['language'].isin(allowed_languages)]
     print(df.shape)
 
+    df_sorted = df.sort_values(by='salary', ascending=False)
+    print(df_sorted.head(20))
+
+    x = df.iloc[:, -2:-1]
+    y = df.iloc[:, -1].values
+    plt.xlabel('Years of experience')
+    plt.ylabel('Salary')
+    plt.scatter(x, y)
+    plt.show()
+
+    df = df[df['salary'] <= 6000]
+    print(df.shape)
+
+    x = df.iloc[:, -2:-1]
+    y = df.iloc[:, -1].values
+    plt.xlabel('Years of experience')
+    plt.ylabel('Salary')
+    plt.scatter(x, y)
+    plt.show()
+
 
 def city_filter(df):
     vilnius_names = ['Vilniuj', 'Vilniua', 'VILNIUJE', 'VILNIUS', 'vilnius', 'Vilniuje']
