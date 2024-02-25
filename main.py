@@ -44,20 +44,20 @@ def filter_data(df, term):
 def lang_filter(df):
     allowed_languages = ['php', 'js', '.net', 'java']
     df = df[df['language'].isin(allowed_languages)]
-    print(df.shape)
+    # print(df.shape)
 
     df_sorted = df.sort_values(by='salary', ascending=False)
-    print(df_sorted.head(20))
+    # print(df_sorted.head(20))
 
-    x = df.iloc[:, -2:-1]
-    y = df.iloc[:, -1].values
-    plt.xlabel('Years of experience')
-    plt.ylabel('Salary')
-    plt.scatter(x, y)
-    plt.show()
+    # x = df.iloc[:, -2:-1]
+    # y = df.iloc[:, -1].values
+    # plt.xlabel('Years of experience')
+    # plt.ylabel('Salary')
+    # plt.scatter(x, y)
+    # plt.show()
 
     df = df[df['salary'] <= 6000]
-    print(df.shape)
+    # print(df.shape)
 
     x = df.iloc[:, -2:-1]
     y = df.iloc[:, -1].values
@@ -65,6 +65,16 @@ def lang_filter(df):
     plt.ylabel('Salary')
     plt.scatter(x, y)
     plt.show()
+
+    one_hot = pd.get_dummies(df['language'], prefix='lang')
+    df = df.join(one_hot)
+    df = df.drop('language', axis=1)
+
+    one_hot = pd.get_dummies(df['city'], prefix='city')
+    df = df.join(one_hot)
+    df = df.drop('city', axis=1)
+
+    print(df.head(10))
 
 
 def city_filter(df):
@@ -76,7 +86,7 @@ def city_filter(df):
     condition = df['city'].isin(kaunas_names)
     df.loc[condition, 'city'] = 'Kaunas'
 
-    print(df.city.value_counts())
+    # print(df.city.value_counts())
 
 
 def linear_regression(df):
